@@ -8,12 +8,10 @@
 
     <title>{{ config('app.name', 'delinquent.id') }}</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    <!-- Styles & Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- Livewire Styles --}}
@@ -27,7 +25,7 @@
         @include('layouts.navigation')
 
         {{-- Main Content --}}
-        <main class="pt-16"> {{-- Memberi padding atas agar konten tidak tertutup header --}}
+        <main class="pt-16">
             @if (isset($header))
                 <div class="bg-white dark:bg-gray-800 shadow-sm">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -47,6 +45,8 @@
 
     {{-- Livewire Scripts --}}
     @livewireScripts
+
+    @stack('scripts')
 </body>
 
 </html>

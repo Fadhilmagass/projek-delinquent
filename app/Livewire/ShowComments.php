@@ -18,18 +18,20 @@ class ShowComments extends Component
 
         $this->validate(['body' => 'required|min:3']);
 
-        $newComment = $this->thread->comments()->create([
+        $this->thread->comments()->create([
             'user_id' => auth()->id(),
             'body' => $this->body,
         ]);
 
-        $this->body = ''; // Reset input
-        $this->thread = $this->thread->fresh(); // Refresh thread untuk mendapatkan comment baru
+        $this->body = '';
+        $this->thread = $this->thread->fresh();
     }
 
     public function render()
     {
-        $this->thread->load('comments.author');
+        $this->thread->load(['comments' => function ($query) {
+            $query->whereNull('parent_id')->with('author')->withCount('replies');
+        }]);
         return view('livewire.show-comments');
     }
 }

@@ -19,52 +19,69 @@
                 </a>
             </div>
 
-            <div class="space-y-4">
+            <div class="space-y-4" x-data="{
+                observe() {
+                    let observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting) {
+                                entry.target.classList.remove('opacity-0', 'translate-y-4')
+                            }
+                        })
+                    }, {
+                        threshold: 0.1
+                    })
+                    document.querySelectorAll('.thread-item').forEach(el => {
+                        observer.observe(el)
+                    })
+                }
+            }" x-init="observe()">
                 @forelse ($threads as $thread)
-                    <div
-                        class="block bg-gray-800 border border-gray-700 rounded-2xl shadow-lg transition-all duration-300 hover:border-primary/80 hover:shadow-primary/20 hover:shadow-lg hover:-translate-y-1">
+                    <div class="thread-item opacity-0 translate-y-4 transform transition-all duration-500 ease-out"
+                        style="transition-delay: {{ $loop->index * 75 }}ms">
                         <a href="{{ route('threads.show', [$category, $thread]) }}"
-                            class="flex flex-col sm:flex-row items-start p-5 sm:p-6 gap-5">
-                            <div class="flex-shrink-0">
-                                <img class="h-12 w-12 rounded-full object-cover"
-                                    src="{{ $thread->author->getAvatarUrl() }}"
-                                    alt="{{ $thread->author->name }}'s avatar">
-                            </div>
-
-                            <div class="flex-1">
-                                <h2 class="text-xl font-bold text-white leading-tight">
-                                    {{ $thread->title }}
-                                </h2>
-                                <p class="mt-1 text-sm text-gray-400">
-                                    Dimulai oleh <span
-                                        class="font-semibold text-gray-300">{{ $thread->author->name }}</span>
-                                    &middot; {{ $thread->created_at->diffForHumans() }}
-                                </p>
-                            </div>
-
-                            <div
-                                class="flex-shrink-0 flex sm:flex-col items-end justify-between w-full sm:w-auto mt-4 sm:mt-0 text-right">
-                                <div class="flex items-center gap-2 text-sm text-gray-400">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    <span>{{ $thread->replies_count }}
-                                        {{ \Illuminate\Support\Str::plural('Balasan', $thread->replies_count) }}</span>
+                            class="group block bg-gray-800 border border-gray-700 rounded-2xl shadow-lg transition-all duration-300 hover:border-primary/80 hover:shadow-primary/20 hover:shadow-lg hover:-translate-y-1 hover:bg-gray-800/70">
+                            <div class="flex flex-col sm:flex-row items-start p-5 sm:p-6 gap-5">
+                                <div class="flex-shrink-0">
+                                    <img class="h-12 w-12 rounded-full object-cover"
+                                        src="{{ $thread->author->getAvatarUrl() }}"
+                                        alt="{{ $thread->author->name }}'s avatar">
                                 </div>
-                                <div class="flex items-center gap-2 text-sm text-gray-400 mt-0 sm:mt-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
-                                        fill="currentColor">
-                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                        <path fill-rule="evenodd"
-                                            d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.022 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    {{-- Ganti dengan kolom view jika ada, jika tidak ini hanya contoh --}}
-                                    <span>{{ $thread->views ?? 0 }}
-                                        {{ \Illuminate\Support\Str::plural('Dilihat', $thread->views ?? 0) }}</span>
+
+                                <div class="flex-1">
+                                    <h2
+                                        class="text-xl font-bold text-white leading-tight transition-colors duration-300 group-hover:text-primary">
+                                        {{ $thread->title }}
+                                    </h2>
+                                    <p class="mt-1 text-sm text-gray-400">
+                                        Dimulai oleh <span
+                                            class="font-semibold text-gray-300">{{ $thread->author->name }}</span>
+                                        &middot; {{ $thread->created_at->diffForHumans() }}
+                                    </p>
+                                </div>
+
+                                <div
+                                    class="flex-shrink-0 flex items-center gap-x-6 w-full sm:w-auto mt-4 sm:mt-0 text-right">
+                                    <div
+                                        class="flex items-center gap-2 text-sm text-gray-400 transition-colors duration-300 group-hover:text-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM7 8H5v2h2V8zm2 0h2v2H9V8zm6 0h-2v2h2V8z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        <span>{{ $thread->replies_count }}</span>
+                                    </div>
+                                    <div
+                                        class="flex items-center gap-2 text-sm text-gray-400 transition-colors duration-300 group-hover:text-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                            <path fill-rule="evenodd"
+                                                d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.022 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        <span>{{ $thread->views ?? 0 }}</span>
+                                    </div>
                                 </div>
                             </div>
                         </a>
@@ -85,7 +102,6 @@
             </div>
 
             <div class="mt-8">
-                {{-- Paginasi akan mengambil gaya dari file kustom --}}
                 {{ $threads->links() }}
             </div>
         </div>

@@ -25,36 +25,8 @@
 
     {{-- Daftar Komentar --}}
     <div class="space-y-6">
-        @forelse ($thread->comments as $comment)
-            <div class="flex gap-4">
-                @if ($comment->author)
-                    <img class="h-10 w-10 rounded-full flex-shrink-0" src="{{ $comment->author->getAvatarUrl() }}"
-                        alt="{{ $comment->author->name }}">
-                    <div class="flex-1">
-                        <div class="bg-gray-700/50 p-4 rounded-lg rounded-tl-none">
-                            <div class="flex justify-between">
-                                <span class="font-bold text-white">{{ $comment->author->name }}</span>
-                                <span class="text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
-                            </div>
-                            <p class="text-gray-300 mt-2">{{ $comment->body }}</p>
-                        </div>
-                        {{-- Tombol Vote untuk Komentar --}}
-                        <livewire:votable-buttons :model="$comment" :wire:key="'comment-vote-'.$comment->id" />
-                    </div>
-                @else
-                    <img class="h-10 w-10 rounded-full flex-shrink-0" src="https://ui-avatars.com/api/?name=User+Deleted&color=7F9CF5&background=EBF4FF"
-                        alt="User Deleted">
-                    <div class="flex-1">
-                        <div class="bg-gray-700/50 p-4 rounded-lg rounded-tl-none">
-                            <div class="flex justify-between">
-                                <span class="font-bold text-white italic">User Deleted</span>
-                                <span class="text-xs text-gray-500">{{ $comment->created_at->diffForHumans() }}</span>
-                            </div>
-                            <p class="text-gray-300 mt-2">{{ $comment->body }}</p>
-                        </div>
-                    </div>
-                @endif
-            </div>
+        @forelse ($thread->comments->where('parent_id', null) as $comment)
+            <livewire:comment-component :comment="$comment" :thread="$thread" wire:key="comment-{{ $comment->id }}" />
         @empty
             <p class="text-gray-500 text-center">Belum ada komentar.</p>
         @endforelse
