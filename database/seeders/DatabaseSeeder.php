@@ -15,7 +15,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             GenreSeeder::class,
-            UserSeeder::class, // <-- Tambahkan baris ini
+            UserSeeder::class,
+            CategorySeeder::class,
         ]);
     }
 }

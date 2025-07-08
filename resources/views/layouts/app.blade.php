@@ -8,26 +8,26 @@
 
     <title>{{ config('app.name', 'delinquent.id') }}</title>
 
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    <!-- Styles & Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    {{-- Livewire Styles --}}
+    @livewireStyles
 </head>
 
 <body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
-    <div x-data="{ atTop: true }" @scroll.window="atTop = (window.pageYOffset > 50) ? false : true" class="min-h-screen">
+    <div class="min-h-screen">
 
-        <header
-            :class="{ 'bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm shadow-md': !atTop, 'bg-transparent': atTop }"
-            class="fixed w-full z-50 transition-all duration-300 ease-in-out">
-            @include('layouts.navigation')
-        </header>
+        {{-- Header --}}
+        @include('layouts.navigation')
 
-        <div class="pt-20">
+        {{-- Main Content --}}
+        <main class="pt-16"> {{-- Memberi padding atas agar konten tidak tertutup header --}}
             @if (isset($header))
                 <div class="bg-white dark:bg-gray-800 shadow-sm">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -36,13 +36,17 @@
                 </div>
             @endif
 
-            <main class="my-8">
+            <div class="my-8">
                 {{ $slot }}
-            </main>
-        </div>
+            </div>
+        </main>
 
+        {{-- Footer --}}
         @include('layouts.partials.footer')
     </div>
+
+    {{-- Livewire Scripts --}}
+    @livewireScripts
 </body>
 
 </html>
