@@ -93,4 +93,23 @@ document.addEventListener("DOMContentLoaded", () => {
     window.addEventListener("scroll", () => {
         handleScrollAnimation();
     });
+
+    const passwordInput = document.getElementById("password");
+    const passwordToggle = document.getElementById("password-toggle");
+    const eyeOpen = document.getElementById("eye-open");
+    const eyeClosed = document.getElementById("eye-closed");
+
+    if (passwordInput && passwordToggle && eyeOpen && eyeClosed) {
+        passwordToggle.addEventListener("click", () => {
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                eyeOpen.classList.add("hidden");
+                eyeClosed.classList.remove("hidden");
+            } else {
+                passwordInput.type = "password";
+                eyeOpen.classList.remove("hidden");
+                eyeClosed.classList.add("hidden");
+            }
+        });
+    }
 });
