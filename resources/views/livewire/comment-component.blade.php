@@ -1,4 +1,4 @@
-<div class="mb-6">
+<div wire:key="comment-{{ $comment->id }}" class="mb-6">
     {{-- Comment Display --}}
     <div class="flex gap-4">
         @if ($comment->author)
@@ -35,15 +35,18 @@
                 @endif
 
                 {{-- Edit/Delete Actions --}}
-                <div class="flex gap-4 mt-2 text-sm text-gray-400">
-                    @can('update', $comment)
-                        <button wire:click="startEditing" class="hover:text-white">Edit</button>
-                    @endcan
-                    @can('delete', $comment)
-                        <button wire:click="$emit('confirmDelete', {{ $comment->id }})"
-                            class="hover:text-red-500">Delete</button>
-                    @endcan
-                </div>
+                @if (auth()->check() && (auth()->id() === $comment->user_id || auth()->user()->can('delete', $comment)))
+                    <div class="flex gap-4 mt-2 text-sm text-gray-400">
+                        @can('update', $comment)
+                            <button wire:click="startEditing" class="hover:text-white">Edit</button>
+                        @endcan
+                        @can('delete', $comment)
+                            <button wire:click="confirmDelete"
+                                x-on:click="if (!confirm('Apakah kamu yakin ingin menghapus komentar ini?')) $event.preventDefault()"
+                                class="hover:text-red-500">Delete</button>
+                        @endcan
+                    </div>
+                @endif
             </div>
 
             {{-- Comment Actions --}}
@@ -81,19 +84,10 @@
                 <div class="mt-4 space-y-4 border-l-2 border-gray-600 pl-4">
                     @foreach ($replies as $reply)
                         <livewire:comment-component :comment="$reply" :thread="$thread"
-                            :wire:key="'reply-'.$reply->id" />
+                            wire:key="reply-{{ $reply->id }}" />
                     @endforeach
                 </div>
             @endif
         </div>
     </div>
 </div>
-
-{{-- JS Confirm Delete --}}
-<script>
-    Livewire.on('confirmDelete', commentId => {
-        if (confirm('Are you sure you want to delete this comment?')) {
-            Livewire.emit('deleteComment', commentId);
-        }
-    });
-</script>

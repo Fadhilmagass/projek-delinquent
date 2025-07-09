@@ -3,16 +3,36 @@
 namespace App\Livewire;
 
 use App\Models\Thread;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ShowComments extends Component
 {
     public Thread $thread;
     public $body = '';
+    public $comments;
+
+    public function mount(Thread $thread)
+    {
+        $this->thread = $thread;
+        $this->loadComments();
+    }
+
+    #[On('commentDeleted')]
+    public function loadComments()
+    {
+        $this->comments = $this->thread
+            ->comments()
+            ->whereNull('parent_id')
+            ->with('author')
+            ->withCount('replies')
+            ->latest()
+            ->get();
+    }
 
     public function postComment()
     {
-        if (! auth()->check()) {
+        if (!auth()->check()) {
             return $this->redirect(route('login'));
         }
 
@@ -24,14 +44,11 @@ class ShowComments extends Component
         ]);
 
         $this->body = '';
-        $this->thread = $this->thread->fresh();
+        $this->loadComments();
     }
 
     public function render()
     {
-        $this->thread->load(['comments' => function ($query) {
-            $query->whereNull('parent_id')->with('author')->withCount('replies');
-        }]);
         return view('livewire.show-comments');
     }
 }

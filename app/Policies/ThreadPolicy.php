@@ -30,4 +30,12 @@ class ThreadPolicy
     {
         return $user->id === $thread->user_id;
     }
+
+    public function before(User $user, string $ability): bool|null
+    {
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+        return null;
+    }
 }

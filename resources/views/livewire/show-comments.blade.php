@@ -1,5 +1,5 @@
 <div class="mt-8">
-    <h2 class="text-2xl font-bold text-white mb-4">Komentar ({{ $thread->comments->count() }})</h2>
+    <h2 class="text-2xl font-bold text-white mb-4">Komentar ({{ $comments->count() }})</h2>
 
     {{-- Form Komentar --}}
     @auth
@@ -22,10 +22,9 @@
         </div>
     @endauth
 
-
     {{-- Daftar Komentar --}}
     <div class="space-y-6">
-        @forelse ($thread->comments->where('parent_id', null) as $comment)
+        @forelse ($comments as $comment)
             <livewire:comment-component :comment="$comment" :thread="$thread" wire:key="comment-{{ $comment->id }}" />
         @empty
             <p class="text-gray-500 text-center">Belum ada komentar.</p>

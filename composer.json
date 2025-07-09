@@ -13,6 +13,7 @@
         "laravel/tinker": "^2.10.1",
         "laravolt/avatar": "^6.2",
         "livewire/livewire": "^3.6",
+        "spatie/laravel-permission": "^6.20",
         "spatie/laravel-sluggable": "^3.7"
     },
     "require-dev": {

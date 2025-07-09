@@ -5,16 +5,19 @@ namespace App\Livewire;
 use App\Models\Comment;
 use App\Models\Thread;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CommentComponent extends Component
 {
+    use AuthorizesRequests;
+
     public Comment $comment;
     public Thread $thread;
 
     public bool $isEditing = false;
     public string $editBody = '';
-
 
     public bool $isReplying = false;
     public string $replyBody = '';
@@ -47,7 +50,7 @@ class CommentComponent extends Component
             'replyBody' => 'required|min:3',
         ]);
 
-        $reply = $this->thread->comments()->create([
+        $this->thread->comments()->create([
             'user_id' => auth()->id(),
             'body' => $this->replyBody,
             'parent_id' => $this->comment->id,
@@ -63,26 +66,26 @@ class CommentComponent extends Component
     {
         $this->showReplies = ! $this->showReplies;
 
-        if ($this->showReplies && $this->replies->isEmpty()) {
+        if ($this->showReplies) {
             $this->loadReplies();
         }
     }
 
+    #[On('commentDeleted')]
     public function loadReplies()
     {
         $this->replies = $this->comment->replies()->with('author')->latest()->get();
     }
 
-    protected $listeners = ['deleteComment'];
-
-    public function deleteComment($id)
+    public function confirmDelete()
     {
-        $comment = Comment::findOrFail($id);
-        $this->authorize('delete', $comment);
-        $comment->delete();
+        $this->authorize('delete', $this->comment);
 
-        $this->dispatch('commentDeleted'); // opsional buat notifikasi
+        $this->comment->delete();
+
+        $this->dispatch('commentDeleted', $this->comment->id);
     }
+
 
     public function startEditing()
     {
