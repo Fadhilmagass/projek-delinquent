@@ -74,7 +74,11 @@ class CommentComponent extends Component
     #[On('commentDeleted')]
     public function loadReplies()
     {
-        $this->replies = $this->comment->replies()->with('author')->latest()->get();
+        $this->replies = $this->comment->replies()
+            ->with(['author', 'userVote'])
+            ->withCount(['upvotes', 'downvotes'])
+            ->latest()
+            ->get();
     }
 
     public function confirmDelete()

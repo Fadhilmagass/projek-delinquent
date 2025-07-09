@@ -19,13 +19,7 @@ class CategoryResource extends Resource
 
     protected static ?string $navigationGroup = 'Forum';
 
-    /**
-     * Membatasi akses ke resource ini hanya untuk user dengan role 'admin'.
-     */
-    public static function canViewAny(): bool
-    {
-        return auth()->user()->hasRole('admin');
-    }
+    
 
     public static function form(Form $form): Form
     {

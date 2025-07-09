@@ -24,8 +24,8 @@ class ShowComments extends Component
         $this->comments = $this->thread
             ->comments()
             ->whereNull('parent_id')
-            ->with('author')
-            ->withCount('replies')
+            ->with(['author', 'userVote'])
+            ->withCount(['replies', 'upvotes', 'downvotes'])
             ->latest()
             ->get();
     }

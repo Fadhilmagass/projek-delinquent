@@ -8,10 +8,12 @@
 
     <title>{{ config('app.name', 'delinquent.id') }}</title>
 
+    {{-- Google Font --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    {{-- Vite Assets --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     {{-- Livewire Styles --}}
@@ -19,22 +21,24 @@
 </head>
 
 <body class="font-sans antialiased bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
-    <div class="min-h-screen">
+    <div class="min-h-screen flex flex-col">
 
         {{-- Header --}}
         @include('layouts.navigation')
 
         {{-- Main Content --}}
-        <main class="pt-16">
-            @if (isset($header))
-                <div class="bg-white dark:bg-gray-800 shadow-sm">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <main class="flex-grow">
+            {{-- Optional Header Section --}}
+            @isset($header)
+                <div class="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                         {{ $header }}
                     </div>
                 </div>
-            @endif
+            @endisset
 
-            <div class="my-8">
+            {{-- Slot Content --}}
+            <div class="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-6">
                 {{ $slot }}
             </div>
         </main>
@@ -45,7 +49,6 @@
 
     {{-- Livewire Scripts --}}
     @livewireScripts
-
     @stack('scripts')
 </body>
 

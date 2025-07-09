@@ -8,33 +8,40 @@ use Livewire\Component;
 class VotableButtons extends Component
 {
     public Model $model;
-    public int $voteScore;
+    public int $score;
+    public ?string $userVote;
 
     public function mount(Model $model)
     {
         $this->model = $model;
-        $this->voteScore = $model->vote_score ?? 0;
+        $this->updateState();
     }
 
-    public function vote(int $voteValue)
+    /**
+     * Method untuk memberikan vote ('upvote' atau 'downvote').
+     */
+    public function vote(string $type): void
     {
         if (! auth()->check()) {
-            return $this->redirect(route('login'));
+            $this->redirect(route('login'), navigate: true);
+            return;
         }
 
-        // Jika user sudah vote dengan nilai yg sama, batalkan vote
-        if ($this->model->votes()->where('user_id', auth()->id())->where('vote', $voteValue)->exists()) {
-            $this->model->votes()->where('user_id', auth()->id())->delete();
-        } else {
-            // Jika belum atau vote beda, buat/update vote
-            $this->model->votes()->updateOrCreate(
-                ['user_id' => auth()->id()],
-                ['vote' => $voteValue]
-            );
-        }
+        // Panggil method vote dari trait Votable
+        $this->model->vote(auth()->user(), $type);
 
-        // Refresh score
-        $this->voteScore = $this->model->fresh()->vote_score;
+        // Refresh model dan state komponen
+        $this->model->refresh();
+        $this->updateState();
+    }
+
+    /**
+     * Memperbarui properti publik komponen dari state model.
+     */
+    private function updateState(): void
+    {
+        $this->score = $this->model->score;
+        $this->userVote = $this->model->is_voted_by_user;
     }
 
     public function render()

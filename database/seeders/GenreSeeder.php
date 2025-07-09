@@ -30,8 +30,9 @@ class GenreSeeder extends Seeder
         ];
 
         foreach ($genres as $genre) {
-            Genre::create([
+            Genre::firstOrCreate([
                 'name' => $genre,
+            ], [
                 'slug' => Str::slug($genre)
             ]);
         }

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\User;
 use App\Models\Genre;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class AdminSeeder extends Seeder
@@ -21,18 +22,26 @@ class AdminSeeder extends Seeder
             return;
         }
 
-        $admin = User::create([
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
-            'password' => bcrypt('admin123'),
-            'bio' => 'Saya adalah admin situs komunitas ini.',
-            'lokasi' => 'Surabaya, Indonesia',
-        ]);
+        $admin = User::firstOrCreate(
+            ['email' => 'admin@example.com'],
+            [
+                'name' => 'Admin',
+                'password' => bcrypt('admin123'),
+                'bio' => 'Saya adalah admin situs komunitas ini.',
+                'lokasi' => 'Surabaya, Indonesia',
+            ]
+        );
 
-        $admin->genres()->attach(
+        $admin->genres()->syncWithoutDetaching(
             $genres->random(3)->pluck('id')->toArray()
         );
 
-        $this->command->info('Admin berhasil dibuat dengan email: admin@example.com dan password: admin123');
+        // Assign 'admin' role
+        $adminRole = Role::where('name', 'admin')->first();
+        if ($adminRole) {
+            $admin->assignRole($adminRole);
+        }
+
+        $this->command->info('Admin berhasil dibuat/diupdate dengan email: admin@example.com dan password: admin123');
     }
 }

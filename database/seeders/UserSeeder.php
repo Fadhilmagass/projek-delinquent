@@ -37,13 +37,17 @@ class UserSeeder extends Seeder
         });
 
         // Anda juga bisa membuat satu user spesifik untuk login
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => bcrypt('password'), // password
-            'bio' => 'User khusus untuk testing. Suka semua jenis metal.',
-            'lokasi' => 'Bandung, Indonesia',
-        ])->genres()->attach(
+        $testUser = User::firstOrCreate(
+            ['email' => 'test@example.com'],
+            [
+                'name' => 'Test User',
+                'password' => bcrypt('password'), // password
+                'bio' => 'User khusus untuk testing. Suka semua jenis metal.',
+                'lokasi' => 'Bandung, Indonesia',
+            ]
+        );
+
+        $testUser->genres()->syncWithoutDetaching(
             $genres->random(3)->pluck('id')->toArray()
         );
     }
