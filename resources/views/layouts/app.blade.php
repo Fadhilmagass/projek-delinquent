@@ -13,6 +13,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    {{-- Tagify CSS --}}
+    <link href="https://unpkg.com/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
+    {{-- EasyMDE CSS --}}
+    <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
+
     {{-- Vite Assets --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -46,6 +52,13 @@
         {{-- Footer --}}
         @include('layouts.partials.footer')
     </div>
+
+    {{-- Tagify JS --}}
+    <script src="https://unpkg.com/@yaireo/tagify"></script>
+    <script src="https://unpkg.com/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+
+    {{-- EasyMDE JS --}}
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
 
     {{-- Livewire Scripts --}}
     @livewireScripts

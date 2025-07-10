@@ -53,9 +53,6 @@ class User extends Authenticatable
         ];
     }
 
-    /**
-     * Relasi many-to-many ke Genre
-     */
     public function genres()
     {
         return $this->belongsToMany(Genre::class);
@@ -71,17 +68,17 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class, 'user_id');
     }
 
-    /**
-     * Helper untuk mendapatkan URL acatar.
-     * Jika user punya catar, tampilkan. Jika tidak, generate dari Laravolt.
-     */
+    public function articles(): HasMany
+    {
+        return $this->hasMany(Article::class);
+    }
+
     public function getAvatarUrl()
     {
         if ($this->avatar_path && Storage::disk('public')->exists($this->avatar_path)) {
             return Storage::url($this->avatar_path);
         }
 
-        // Menggunakan Laravolt Avatar sebagai fallback
         return \Laravolt\Avatar\Facade::create($this->name)->toBase64();
     }
 }

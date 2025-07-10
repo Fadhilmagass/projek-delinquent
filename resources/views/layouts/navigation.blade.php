@@ -16,6 +16,9 @@
                     <x-nav-link :href="route('forum.categories.index')" :active="request()->routeIs('forum.categories.index')">
                         {{ __('Forum') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('articles.index')" :active="request()->routeIs('articles.index')">
+                        {{ __('Artikel') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -74,6 +77,9 @@
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('forum.categories.index')" :active="request()->routeIs('forum.categories.index')">
                 {{ __('Forum') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('articles.index')" :active="request()->routeIs('articles.index')">
+                {{ __('Artikel') }}
             </x-responsive-nav-link>
         </div>
 

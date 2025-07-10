@@ -30,7 +30,7 @@
 
             {{-- Komponen Komentar --}}
             <div class="mt-8">
-                <livewire:show-comments :thread="$thread" :wire:key="'comments-for-thread-'.$thread->id" />
+                <livewire:show-comments :model="$thread" :key="'comments-for-thread-' . $thread->id" />
             </div>
         </div>
     </div>

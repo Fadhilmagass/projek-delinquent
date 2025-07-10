@@ -15,8 +15,8 @@ class DashboardController extends Controller
         $user->loadCount(['threads', 'comments']);
 
         // Get recent activities
-        $threads = $user->threads()->latest()->limit(5)->get();
-        $comments = $user->comments()->with('commentable')->latest()->limit(5)->get();
+        $threads = $user->threads()->with('category')->latest()->limit(5)->get();
+        $comments = $user->comments()->with('commentable.category')->latest()->limit(5)->get();
 
         // Merge and sort activities
         $activities = $threads->concat($comments)->sortByDesc('created_at')->take(10);

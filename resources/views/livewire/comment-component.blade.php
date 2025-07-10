@@ -4,12 +4,16 @@
         @if ($comment->author)
             <img class="h-10 w-10 rounded-full" src="{{ $comment->author->getAvatarUrl() }}"
                 alt="{{ $comment->author->name }}">
+        @else
+            {{-- Fallback for deleted or non-existent author --}}
+            <img class="h-10 w-10 rounded-full" src="{{ \Laravolt\Avatar\Facade::create('Guest')->toBase64() }}"
+                alt="Guest Avatar">
         @endif
 
         <div class="flex-1">
             <div class="bg-gray-700/50 p-4 rounded-lg rounded-tl-none">
                 <div class="flex justify-between text-white text-sm">
-                    <strong>{{ $comment->author->name }}</strong>
+                    <strong>{{ $comment->author ? $comment->author->name : 'Pengguna Tidak Ditemukan' }}</strong>
                     <span class="text-xs text-gray-400">
                         {{ $comment->created_at->diffForHumans() }}
                     </span>
@@ -31,7 +35,7 @@
                         </div>
                     </form>
                 @else
-                    <p class="text-gray-300 mt-2">{{ $comment->body }}</p>
+                    <p class="text-gray-300 mt-2">{{ nl2br(e($comment->body)) }}</p>
                 @endif
 
                 {{-- Edit/Delete Actions --}}
@@ -83,7 +87,7 @@
             @if ($showReplies)
                 <div class="mt-4 space-y-4 border-l-2 border-gray-600 pl-4">
                     @foreach ($replies as $reply)
-                        <livewire:comment-component :comment="$reply" :thread="$thread"
+                        <livewire:comment-component :comment="$reply" :commentable="$commentable"
                             wire:key="reply-{{ $reply->id }}" />
                     @endforeach
                 </div>

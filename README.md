@@ -6,6 +6,7 @@ A modern, interactive forum platform built with the TALL stack (Tailwind, Alpine
 
 ## ✨ Features
 
+*   **Article Management:** Create, view, and manage articles with rich text content, images, categories, and tags through the Filament admin panel.
 *   **Modern UI/UX:** A clean, responsive, and intuitive design built with Tailwind CSS and Alpine.js.
 *   **Dynamic Components:** Seamless user experience with real-time updates powered by Livewire.
 *   **Thread & Comment System:** Create, view, and engage in discussions with nested replies.
@@ -14,7 +15,7 @@ A modern, interactive forum platform built with the TALL stack (Tailwind, Alpine
 *   **Soft Deletes:** Threads and comments are soft-deleted to maintain data integrity.
 *   **Category Organization:** Browse threads by categories for easy navigation.
 *   **Admin Panel (Filament):** A powerful and intuitive admin panel to manage users, threads, categories, and more.
-*   **Idempotent Seeders:** Database seeders are designed to be run multiple times without creating duplicate data.
+*   **Idempotent Seeders:** Database seeders are designed to be run multiple multiple times without creating duplicate data.
 
 ## 🚀 Technologies Used
 
@@ -25,6 +26,7 @@ A modern, interactive forum platform built with the TALL stack (Tailwind, Alpine
 *   **MySQL:** Robust and reliable database management.
 *   **Filament 3.x:** A collection of tools for rapidly building beautiful TALL stack apps.
 *   **Spatie Laravel Permission:** For robust role and permission management.
+*   **Spatie Laravel Tags:** For adding and managing tags on models.
 
 ## 📦 Installation
 
@@ -73,7 +75,7 @@ Follow these steps to get the project up and running on your local machine.
     DB_PORT=3306
     DB_DATABASE=delinquent_id
     DB_USERNAME=root
-    DB_PASSWORD=
+    DB_PASSWORD=gualupa420
     ```
 
 7.  **Run database migrations and seeders:**

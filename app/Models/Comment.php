@@ -20,6 +20,18 @@ class Comment extends Model
         'parent_id'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        // Ketika komentar dihapus secara lunak, hapus lunak juga semua balasannya
+        static::deleting(function (Comment $comment) {
+            $comment->replies->each(function (Comment $reply) {
+                $reply->delete(); // Ini akan memicu event deleting pada balasan juga (rekursif)
+            });
+        });
+    }
+
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');

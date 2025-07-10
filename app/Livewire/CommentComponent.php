@@ -14,7 +14,7 @@ class CommentComponent extends Component
     use AuthorizesRequests;
 
     public Comment $comment;
-    public Thread $thread;
+    public $commentable; // Can be Article or Thread
 
     public bool $isEditing = false;
     public string $editBody = '';
@@ -50,7 +50,7 @@ class CommentComponent extends Component
             'replyBody' => 'required|min:3',
         ]);
 
-        $this->thread->comments()->create([
+        $this->commentable->comments()->create([
             'user_id' => auth()->id(),
             'body' => $this->replyBody,
             'parent_id' => $this->comment->id,

@@ -1,5 +1,7 @@
+{{-- File: resources/views/livewire/show-comments.blade.php --}}
 <div class="mt-8">
-    <h2 class="text-2xl font-bold text-white mb-4">Komentar ({{ $comments->count() }})</h2>
+    {{-- Ganti $thread menjadi $model --}}
+    <h2 class="text-2xl font-bold text-white mb-4">Komentar ({{ $model->comments->count() }})</h2>
 
     {{-- Form Komentar --}}
     @auth
@@ -25,7 +27,7 @@
     {{-- Daftar Komentar --}}
     <div class="space-y-6">
         @forelse ($comments as $comment)
-            <livewire:comment-component :comment="$comment" :thread="$thread" wire:key="comment-{{ $comment->id }}" />
+            <livewire:comment-component :comment="$comment" :commentable="$model" :key="$comment->id" />
         @empty
             <p class="text-gray-500 text-center">Belum ada komentar.</p>
         @endforelse
