@@ -1,79 +1,79 @@
 # delinquent.id
 
-![delinquent.id Banner](./public/images/banner.png)
+![](./public/images/banner.png)
 
-A modern, interactive forum platform built with the TALL stack (Tailwind, Alpine, Livewire, Laravel), designed for engaging discussions and a vibrant community interaction.
+Sebuah platform forum modern dan interaktif yang dibangun dengan TALL stack (Tailwind, Alpine, Livewire, Laravel), dirancang untuk diskusi yang menarik dan interaksi komunitas yang dinamis.
 
-## ✨ Features
+## ✨ Fitur
 
--   **Article Management:** Create, view, and manage articles with rich text content, images, categories, and tags through the Filament admin panel.
--   **Modern UI/UX:** A clean, responsive, and intuitive design built with Tailwind CSS and Alpine.js.
--   **Dynamic Components:** Seamless user experience with real-time updates powered by Livewire.
--   **Thread & Comment System:** Create, view, and engage in discussions with nested replies.
--   **Refactored Voting System:** Efficiently upvote/downvote threads and comments to highlight valuable content.
--   **Role-Based Access Control (RBAC):** Clear separation of permissions between 'admin' and 'member' roles using `spatie/laravel-permission`.
--   **Soft Deletes:** Threads and comments are soft-deleted to maintain data integrity.
--   **Category Organization:** Browse threads by categories for easy navigation.
--   **Admin Panel (Filament):** A powerful and intuitive admin panel to manage users, threads, categories, and more.
--   **Idempotent Seeders:** Database seeders are designed to be run multiple multiple times without creating duplicate data.
+-   **Manajemen Artikel:** Buat, lihat, dan kelola artikel dengan konten _rich text_, gambar, kategori, dan _tag_ melalui panel admin Filament.
+-   **UI/UX Modern:** Desain yang bersih, responsif, dan intuitif dibangun dengan Tailwind CSS dan Alpine.js.
+-   **Komponen Dinamis:** Pengalaman pengguna yang mulus dengan pembaruan _real-time_ yang didukung oleh Livewire.
+-   **Sistem Thread & Komentar:** Buat, lihat, dan berpartisipasi dalam diskusi dengan balasan berjenjang (_nested replies_).
+-   **Sistem Voting:** Lakukan _upvote/downvote_ pada _thread_ dan komentar secara efisien untuk menyorot konten yang berharga.
+-   **Kontrol Akses Berbasis Peran (RBAC):** Pemisahan hak akses yang jelas antara peran 'admin' dan 'member' menggunakan `spatie/laravel-permission`.
+-   **Soft Deletes:** _Thread_ dan komentar dihapus secara _soft-delete_ untuk menjaga integritas data.
+-   **Organisasi Kategori:** Jelajahi _thread_ berdasarkan kategori untuk navigasi yang mudah.
+-   **Panel Admin (Filament):** Panel admin yang andal dan intuitif untuk mengelola pengguna, _thread_, kategori, dan lainnya.
+-   **Seeder Idempoten:** _Database seeder_ dirancang agar dapat dijalankan berulang kali tanpa membuat data duplikat.
 
-## 🚀 Technologies Used
+## 🚀 Teknologi yang Digunakan
 
--   **Laravel 11.x:** The PHP Framework for Web Artisans.
--   **Livewire 3.x:** A full-stack framework for Laravel that makes building dynamic interfaces simple.
--   **Tailwind CSS:** A utility-first CSS framework for rapidly building custom designs.
--   **Alpine.js:** A rugged, minimal JavaScript framework for composing behavior directly in your markup.
--   **MySQL:** Robust and reliable database management.
--   **Filament 3.x:** A collection of tools for rapidly building beautiful TALL stack apps.
--   **Spatie Laravel Permission:** For robust role and permission management.
--   **Spatie Laravel Tags:** For adding and managing tags on models.
+-   **Laravel 11.x:** Kerangka kerja PHP untuk para pengrajin web.
+-   **Livewire 3.x:** Kerangka kerja _full-stack_ untuk Laravel yang membuat pembuatan antarmuka dinamis menjadi sederhana.
+-   **Tailwind CSS:** Kerangka kerja CSS _utility-first_ untuk membangun desain kustom dengan cepat.
+-   **Alpine.js:** Kerangka kerja JavaScript minimalis untuk menyusun fungsionalitas langsung di dalam markup Anda.
+-   **MySQL:** Manajemen database yang tangguh dan andal.
+-   **Filament 3.x:** Kumpulan perangkat untuk membangun aplikasi TALL stack yang indah dengan cepat.
+-   **Spatie Laravel Permission:** Untuk manajemen peran dan hak akses yang solid.
+-   **Spatie Laravel Tags:** Untuk menambahkan dan mengelola _tag_ pada model.
 
-## 📦 Installation
+## 📦 Instalasi
 
-Follow these steps to get the project up and running on your local machine.
+Ikuti langkah-langkah ini untuk menjalankan proyek di mesin lokal Anda.
 
-### Prerequisites
+### Prasyarat
 
--   PHP >= 8.2
+-   PHP \>= 8.2
 -   Composer
--   Node.js & npm (or Yarn)
--   MySQL (or another database supported by Laravel)
+-   Node.js & npm (atau Yarn)
+-   MySQL (atau database lain yang didukung oleh Laravel)
 
-### Steps
+### Langkah-langkah
 
-1.  **Clone the repository:**
+1.  **Clone repositori:**
 
     ```bash
-    git clone https://github.com/your-username/delinquent-id.git
+    git clone https://github.com/username-anda/delinquent-id.git
     cd delinquent-id
     ```
 
-2.  **Install PHP dependencies:**
+2.  **Instal dependensi PHP:**
 
     ```bash
     composer install
     ```
 
-3.  **Install Node.js dependencies:**
+3.  **Instal dependensi Node.js:**
 
     ```bash
     npm install
     ```
 
-4.  **Copy the environment file:**
+4.  **Salin file environment:**
 
     ```bash
     cp .env.example .env
     ```
 
-5.  **Generate application key:**
+5.  **Buat kunci aplikasi:**
 
     ```bash
     php artisan key:generate
     ```
 
-6.  **Configure your database:**
-    Open the `.env` file and update the database credentials:
+6.  **Konfigurasi database Anda:**
+    Buka file `.env` dan perbarui kredensial database Anda:
 
     ```dotenv
     DB_CONNECTION=mysql
@@ -81,62 +81,57 @@ Follow these steps to get the project up and running on your local machine.
     DB_PORT=3306
     DB_DATABASE=delinquent_id
     DB_USERNAME=root
-    DB_PASSWORD=gualupa420
+    DB_PASSWORD=
     ```
 
-7.  **Run database migrations and seeders:**
+    _(**Catatan:** Isi `DB_USERNAME` dan `DB_PASSWORD` sesuai dengan konfigurasi database lokal Anda.)_
+
+7.  **Jalankan migrasi dan seeder database:**
 
     ```bash
     php artisan migrate --seed
     ```
 
-    This command will set up the database schema and populate it with initial data, including roles, permissions, and a default admin user. The seeders are idempotent, meaning you can run this command again without causing errors or data duplication.
+    Perintah ini akan menyiapkan skema database dan mengisinya dengan data awal, termasuk peran, hak akses, dan pengguna admin default. _Seeder_ ini bersifat idempoten, artinya Anda dapat menjalankan perintah ini lagi tanpa menyebabkan kesalahan atau duplikasi data.
 
-8.  **Link storage:**
+8.  **Tautkan penyimpanan (storage):**
 
     ```bash
     php artisan storage:link
     ```
 
-9.  **Compile assets:**
+9.  **Kompilasi aset:**
 
     ```bash
     npm run dev
     ```
 
-    For production, use `npm run build`.
+    Untuk lingkungan produksi, gunakan `npm run build`.
 
-10. **Start the development server:**
+10. **Jalankan server pengembangan:**
 
     ```bash
     php artisan serve
     ```
 
-    The application will be available at `http://127.0.0.1:8000`.
+    Aplikasi akan tersedia di `http://127.0.0.1:8000`.
 
-## 💡 Default Users
+## 💡 Pengguna Default
 
-The database seeder creates the following users for testing and administration:
+_Seeder_ database akan membuat pengguna default untuk tujuan pengujian dan administrasi. Untuk melihat dan mengatur kredensial (email & password) yang dibuat, silakan periksa file seeder yang bersangkutan (contoh: `database/seeders/UserSeeder.php`).
 
--   **Admin:**
-    -   **Email:** `admin@example.com`
-    -   **Password:** `admin123`
--   **Test User:**
-    -   **Email:** `test@example.com`
-    -   **Password:** `password`
+Anda dapat mengakses panel admin Filament di `/admin` menggunakan kredensial admin yang telah Anda tetapkan di dalam seeder.
 
-You can access the Filament admin panel at `/admin` using the admin credentials.
+## 🤝 Berkontribusi
 
-## 🤝 Contributing
+Kontribusi sangat kami harapkan\! Jangan ragu untuk mengirimkan _pull request_.
 
-Contributions are welcome! Please feel free to submit a pull request.
+1.  Lakukan _Fork_ pada Proyek
+2.  Buat _Branch_ Fitur Anda (`git checkout -b feature/FiturLuarBiasa`)
+3.  _Commit_ Perubahan Anda (`git commit -m 'Menambahkan FiturLuarBiasa'`)
+4.  _Push_ ke _Branch_ (`git push origin feature/FiturLuarBiasa`)
+5.  Buka sebuah _Pull Request_
 
-1.  Fork the Project
-2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4.  Push to the Branch (`git push origin feature/AmazingFeature`)
-5.  Open a Pull Request
+## 📄 Lisensi
 
-## 📄 License
-
-This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Proyek ini adalah perangkat lunak sumber terbuka yang dilisensikan di bawah [Lisensi MIT](https://opensource.org/licenses/MIT).
