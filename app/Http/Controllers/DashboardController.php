@@ -12,11 +12,11 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         // Eager load counts for statistics
-        $user->loadCount(['threads', 'comments']);
+        $user->loadCount(['threads', 'comments', 'followers', 'following']);
 
         // Get recent activities
         $threads = $user->threads()->with('category')->latest()->limit(5)->get();
-        $comments = $user->comments()->with('commentable.category')->latest()->limit(5)->get();
+        $comments = $user->comments()->with('commentable')->latest()->limit(5)->get();
 
         // Merge and sort activities
         $activities = $threads->concat($comments)->sortByDesc('created_at')->take(10);

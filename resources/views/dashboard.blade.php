@@ -47,6 +47,14 @@
                                 <p class="text-xs text-gray-400 uppercase">Komentar</p>
                             </div>
                             <div class="bg-gray-700/40 px-4 py-2 rounded text-center">
+                                <p class="text-xl font-bold text-primary">{{ auth()->user()->followers_count }}</p>
+                                <p class="text-xs text-gray-400 uppercase">Pengikut</p>
+                            </div>
+                            <div class="bg-gray-700/40 px-4 py-2 rounded text-center">
+                                <p class="text-xl font-bold text-primary">{{ auth()->user()->following_count }}</p>
+                                <p class="text-xs text-gray-400 uppercase">Mengikuti</p>
+                            </div>
+                            <div class="bg-gray-700/40 px-4 py-2 rounded text-center">
                                 <p class="text-xl font-bold text-primary">
                                     {{ auth()->user()->created_at->diffForHumans(null, true) }}</p>
                                 <p class="text-xs text-gray-400 uppercase">Bergabung</p>
@@ -123,7 +131,7 @@
                             <div class="activity-item opacity-0 translate-y-4 transform transition-all duration-500 ease-out"
                                 style="transition-delay: {{ $loop->index * 50 }}ms">
                                 @if ($activity instanceof \App\Models\Thread)
-                                    <a href="{{ route('threads.show', [$activity->category, $activity]) }}"
+                                    <a href="{{ route('threads.show', $activity->slug) }}"
                                         class="block bg-gray-800/40 border border-gray-700/40 rounded-xl p-4 hover:border-primary transition duration-200">
                                         <div class="flex items-center gap-4">
                                             <span class="text-blue-400">
@@ -141,21 +149,45 @@
                                                 class="text-xs text-gray-500">{{ $activity->created_at->diffForHumans() }}</span>
                                         </div>
                                     </a>
-                                @elseif ($activity instanceof \App\Models\Comment)
-                                    <a href="{{ route('threads.show', [$activity->commentable->category, $activity->commentable]) }}#comment-{{ $activity->id }}"
+                                @elseif ($activity instanceof \App\Models\Article)
+                                    <a href="{{ route('articles.show', $activity) }}"
                                         class="block bg-gray-800/40 border border-gray-700/40 rounded-xl p-4 hover:border-primary transition duration-200">
                                         <div class="flex items-center gap-4">
-                                            <span class="text-green-400">
-                                                <x-heroicon-o-chat-bubble-left-ellipsis class="h-5 w-5" />
+                                            <span class="text-yellow-400">
+                                                <x-heroicon-o-newspaper class="h-5 w-5" />
                                             </span>
                                             <div class="flex-1">
-                                                <p class="text-sm text-gray-400">Komentar pada</p>
-                                                <p class="text-white font-semibold line-clamp-1">
-                                                    {{ $activity->commentable->title }}</p>
+                                                <p class="text-sm text-gray-400">
+                                                    Article in <span
+                                                        class="text-primary">{{ $activity->categories->first()->name }}</span>
+                                                </p>
+                                                <p class="text-white font-semibold line-clamp-1">{{ $activity->title }}
+                                                </p>
                                             </div>
                                             <span
                                                 class="text-xs text-gray-500">{{ $activity->created_at->diffForHumans() }}</span>
                                         </div>
+                                    </a>
+                                @elseif ($activity instanceof \App\Models\Comment)
+                                    @if ($activity->commentable instanceof \App\Models\Thread)
+                                        <a href="{{ route('threads.show', $activity->commentable->slug) }}#comment-{{ $activity->id }}"
+                                            class="block bg-gray-800/40 border border-gray-700/40 rounded-xl p-4 hover:border-primary transition duration-200">
+                                        @elseif ($activity->commentable instanceof \App\Models\Article)
+                                            <a href="{{ route('articles.show', $activity->commentable) }}#comment-{{ $activity->id }}"
+                                                class="block bg-gray-800/40 border border-gray-700/40 rounded-xl p-4 hover:border-primary transition duration-200">
+                                    @endif
+                                    <div class="flex items-center gap-4">
+                                        <span class="text-green-400">
+                                            <x-heroicon-o-chat-bubble-left-ellipsis class="h-5 w-5" />
+                                        </span>
+                                        <div class="flex-1">
+                                            <p class="text-sm text-gray-400">Komentar pada</p>
+                                            <p class="text-white font-semibold line-clamp-1">
+                                                {{ $activity->commentable->title }}</p>
+                                        </div>
+                                        <span
+                                            class="text-xs text-gray-500">{{ $activity->created_at->diffForHumans() }}</span>
+                                    </div>
                                     </a>
                                 @endif
                             </div>

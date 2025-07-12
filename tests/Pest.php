@@ -15,6 +15,10 @@ pest()->extend(Tests\TestCase::class)
     ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
     ->in('Feature');
 
+beforeEach(function () {
+    $this->withoutMiddleware(\App\Http\Middleware\VerifyCsrfToken::class);
+});
+
 /*
 |--------------------------------------------------------------------------
 | Expectations

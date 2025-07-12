@@ -1,9 +1,7 @@
-{{-- File: resources/views/livewire/show-comments.blade.php --}}
 <div class="mt-8">
-    {{-- Ganti $thread menjadi $model --}}
     <h2 class="text-2xl font-bold text-white mb-4">Komentar ({{ $model->comments->count() }})</h2>
 
-    {{-- Form Komentar --}}
+    {{-- Comment Form --}}
     @auth
         <form wire:submit.prevent="postComment" class="mb-8">
             <textarea wire:model.defer="body" rows="4"
@@ -24,12 +22,13 @@
         </div>
     @endauth
 
-    {{-- Daftar Komentar --}}
-    <div class="space-y-6">
+    {{-- Comments List --}}
+    <div class="space-y-8">
         @forelse ($comments as $comment)
-            <livewire:comment-component :comment="$comment" :commentable="$model" :key="$comment->id" />
+            {{-- Use a unique wire:key for each top-level comment --}}
+            <livewire:comment-component :comment="$comment" :commentable="$model" wire:key="comment-{{ $comment->id }}-{{ $comment->replies->count() }}" />
         @empty
-            <p class="text-gray-500 text-center">Belum ada komentar.</p>
+            <p class="text-gray-500 text-center">Belum ada komentar. Jadilah yang pertama!</p>
         @endforelse
     </div>
 </div>

@@ -11,6 +11,7 @@ Sebuah platform forum modern dan interaktif yang dibangun dengan TALL stack (Tai
 -   **Komponen Dinamis:** Pengalaman pengguna yang mulus dengan pembaruan _real-time_ yang didukung oleh Livewire.
 -   **Sistem Thread & Komentar:** Buat, lihat, dan berpartisipasi dalam diskusi dengan balasan berjenjang (_nested replies_).
 -   **Sistem Voting:** Lakukan _upvote/downvote_ pada _thread_ dan komentar secara efisien untuk menyorot konten yang berharga.
+-   **Profil Pengguna & Sistem Mengikuti:** Tampilan profil publik yang kaya dengan informasi pengguna, daftar thread dan artikel, serta kemampuan untuk mengikuti/berhenti mengikuti pengguna lain dengan pembaruan jumlah pengikut secara _real-time_.
 -   **Kontrol Akses Berbasis Peran (RBAC):** Pemisahan hak akses yang jelas antara peran 'admin' dan 'member' menggunakan `spatie/laravel-permission`.
 -   **Soft Deletes:** _Thread_ dan komentar dihapus secara _soft-delete_ untuk menjaga integritas data.
 -   **Organisasi Kategori:** Jelajahi _thread_ berdasarkan kategori untuk navigasi yang mudah.
@@ -44,8 +45,8 @@ Ikuti langkah-langkah ini untuk menjalankan proyek di mesin lokal Anda.
 1.  **Clone repositori:**
 
     ```bash
-    git clone https://github.com/username-anda/delinquent-id.git
-    cd delinquent-id
+    git clone https://github.com/Fadhilmagass/projek-delinquent.git
+    cd projek-delinquent
     ```
 
 2.  **Instal dependensi PHP:**
@@ -63,7 +64,7 @@ Ikuti langkah-langkah ini untuk menjalankan proyek di mesin lokal Anda.
 4.  **Salin file environment:**
 
     ```bash
-    cp .env.example .env
+    copy .env.example .env
     ```
 
 5.  **Buat kunci aplikasi:**
@@ -103,7 +104,7 @@ Ikuti langkah-langkah ini untuk menjalankan proyek di mesin lokal Anda.
 9.  **Kompilasi aset:**
 
     ```bash
-    npm run dev
+    npm run build && npm run dev
     ```
 
     Untuk lingkungan produksi, gunakan `npm run build`.

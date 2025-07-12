@@ -16,33 +16,76 @@ class ThreadController extends Controller
         return view('threads.index', compact('category', 'threads'));
     }
 
-    public function create(Category $category)
+    public function create()
     {
-        return view('threads.create', compact('category'));
+        // Ambil semua kategori untuk ditampilkan di dropdown
+        $categories = Category::all();
+        return view('threads.create', compact('categories'));
     }
 
-    public function store(Request $request, Category $category)
+    public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|max:255',
             'body' => 'required|min:10',
+            'category_id' => 'required|exists:categories,id', // Validasi kategori
         ]);
 
-        $category->threads()->create([
+        $thread = Thread::create([
             'user_id' => auth()->id(),
             'title' => $request->title,
             'body' => $request->body,
+            'category_id' => $request->category_id,
         ]);
 
-        return redirect()->route('threads.index', $category);
+        return redirect()->route('threads.show', $thread->slug);
     }
 
-    public function show(Category $category, Thread $thread)
+    public function show(Thread $thread)
     {
-        // Konversi body dari markdown ke html
-        $converter = new CommonMarkConverter();
-        $thread->body = Str::of($converter->convert($thread->body));
+        // Konversi body dari markdown ke html jika perlu
+        // $converter = new CommonMarkConverter();
+        // $thread->body = Str::of($converter->convert($thread->body));
 
-        return view('threads.show', compact('category', 'thread'));
+        // Eager load relasi untuk efisiensi
+        $thread->load(['author', 'category']);
+
+        return view('threads.show', compact('thread'));
+    }
+
+    public function edit(Thread $thread)
+    {
+        $this->authorize('update', $thread); // Memastikan hanya pemilik yang bisa mengedit
+        $categories = Category::all();
+        return view('threads.edit', compact('thread', 'categories'));
+    }
+
+    public function update(Request $request, Thread $thread)
+    {
+        $this->authorize('update', $thread); // Memastikan hanya pemilik yang bisa mengupdate
+
+        $request->validate([
+            'title' => 'required|max:255',
+            'body' => 'required|min:10',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+
+        $thread->update([
+            'title' => $request->title,
+            'body' => $request->body,
+            'category_id' => $request->category_id,
+            'slug' => Str::slug($request->title), // Update slug based on new title
+        ]);
+
+        return redirect()->route('threads.show', $thread->slug)->with('success', 'Thread berhasil diperbarui!');
+    }
+
+    public function destroy(Thread $thread)
+    {
+        $this->authorize('delete', $thread); // Memastikan hanya pemilik yang bisa menghapus
+
+        $thread->delete();
+
+        return redirect()->route('forum.index')->with('success', 'Thread berhasil dihapus!');
     }
 }

@@ -1,6 +1,7 @@
 import defaultTheme from "tailwindcss/defaultTheme";
 import forms from "@tailwindcss/forms";
 import typography from "@tailwindcss/typography";
+import lineClamp from "@tailwindcss/line-clamp";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -17,14 +18,14 @@ export default {
                 bebas: ["Bebas Neue", "sans-serif"],
             },
             keyframes: {
-                'fade-in-down': {
-                    '0%': {
-                        opacity: '0',
-                        transform: 'translateY(-20px)'
+                "fade-in-down": {
+                    "0%": {
+                        opacity: "0",
+                        transform: "translateY(-20px)",
                     },
-                    '100%': {
-                        opacity: '1',
-                        transform: 'translateY(0)'
+                    "100%": {
+                        opacity: "1",
+                        transform: "translateY(0)",
                     },
                 },
             },
@@ -34,10 +35,14 @@ export default {
                 secondary: "#4B5563", // Abu-abu Medium (Gray-600)
             },
             animation: {
-                'fade-in-down': 'fade-in-down 0.8s ease-out forwards',
+                "fade-in-down": "fade-in-down 0.8s ease-out forwards",
             },
         },
     },
 
-    plugins: [forms, typography],
+    plugins: [
+        forms,
+        typography,
+        lineClamp,
+    ],
 };

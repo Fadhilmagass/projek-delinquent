@@ -50,16 +50,19 @@ class CommentComponent extends Component
             'replyBody' => 'required|min:3',
         ]);
 
-        $this->commentable->comments()->create([
+        // Create reply and explicitly set the commentable fields
+        $this->comment->replies()->create([
             'user_id' => auth()->id(),
             'body' => $this->replyBody,
-            'parent_id' => $this->comment->id,
+            'commentable_type' => $this->commentable->getMorphClass(),
+            'commentable_id' => $this->commentable->getKey(),
         ]);
 
         $this->replyBody = '';
         $this->isReplying = false;
 
         $this->loadReplies();
+        $this->showReplies = true;
     }
 
     public function toggleReplies()
@@ -75,8 +78,6 @@ class CommentComponent extends Component
     public function loadReplies()
     {
         $this->replies = $this->comment->replies()
-            ->with(['author', 'userVote'])
-            ->withCount(['upvotes', 'downvotes'])
             ->latest()
             ->get();
     }

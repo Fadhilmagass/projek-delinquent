@@ -17,7 +17,9 @@ class Comment extends Model
     protected $fillable = [
         'user_id',
         'body',
-        'parent_id'
+        'parent_id',
+        'commentable_type',
+        'commentable_id',
     ];
 
     protected static function boot()
@@ -49,6 +51,12 @@ class Comment extends Model
 
     public function replies(): HasMany
     {
-        return $this->hasMany(Comment::class, 'parent_id');
+        return $this->hasMany(Comment::class, 'parent_id')
+            ->with([
+                'replies', // Recursive eager-loading
+                'author',
+                'userVote'
+            ])
+            ->withCount(['upvotes', 'downvotes']);
     }
 }

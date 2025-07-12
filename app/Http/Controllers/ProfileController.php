@@ -3,24 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
-use App\Models\Genre;
-use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
+    /**
+     * Display the specified user's profile.
+     */
+    public function show(User $user): View
+    {
+        $threads = $user->threads()->latest()->paginate(10);
+        $articles = $user->articles()->latest()->paginate(10);
+
+        return view('users.show', compact('user', 'threads', 'articles'));
+    }
+
     /**
      * Display the user's profile form.
      */
     public function edit(Request $request): View
     {
+        $genres = \App\Models\Genre::all();
+
         return view('profile.edit', [
             'user' => $request->user(),
-            'genres' => Genre::all(),
+            'genres' => $genres,
         ]);
     }
 
@@ -30,110 +42,39 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
-
         $user->fill($request->validated());
 
-        $user->bio = $request->input('bio');
-        $user->lokasi = $request->input('lokasi');
-
-        if ($user->isDirty('email')) {
-            $user->email_verified_at = null;
+        if ($request->user()->isDirty('email')) {
+            $request->user()->email_verified_at = null;
         }
 
         if ($request->hasFile('avatar')) {
-            if ($user->avatar_path) {
-                Storage::disk('public')->delete($user->avatar_path);
+            // Hapus avatar lama jika ada
+            if ($user->avatar && file_exists(public_path('storage/' . $user->avatar))) {
+                unlink(public_path('storage/' . $user->avatar));
             }
-
-            $path = $request->file('avatar')->store('avatars', 'public');
-
-            // --- PERUBAHAN: Menggunakan GD Library untuk resize gambar ---
-            $this->resizeImage($path, 300, 300);
-
-            $user->avatar_path = $path;
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar_path = $avatarPath;
         }
 
         $user->save();
 
+        // Sinkronkan genres jika ada
         if ($request->has('genres')) {
             $user->genres()->sync($request->input('genres'));
         } else {
-            $user->genres()->detach();
+            $user->genres()->detach(); // Hapus semua jika tidak ada yang dipilih
         }
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
     /**
-     * Fungsi helper untuk me-resize gambar menggunakan GD Library.
-     *
-     * @param string $path Path file relatif terhadap storage/app/public.
-     * @param int $width Lebar target.
-     * @param int $height Tinggi target.
-     */
-    private function resizeImage(string $path, int $width, int $height): void
-    {
-        $fullPath = storage_path("app/public/{$path}");
-
-        // Dapatkan informasi gambar
-        [$originalWidth, $originalHeight, $imageType] = getimagesize($fullPath);
-
-        // Buat gambar sumber berdasarkan tipe file
-        $sourceImage = match ($imageType) {
-            IMAGETYPE_JPEG => imagecreatefromjpeg($fullPath),
-            IMAGETYPE_PNG => imagecreatefrompng($fullPath),
-            IMAGETYPE_GIF => imagecreatefromgif($fullPath),
-            default => null,
-        };
-
-        if ($sourceImage === null) {
-            return; // Lewati jika format tidak didukung
-        }
-
-        // Buat kanvas tujuan
-        $destinationImage = imagecreatetruecolor($width, $height);
-
-        // Menjaga transparansi untuk PNG
-        if ($imageType === IMAGETYPE_PNG) {
-            imagealphablending($destinationImage, false);
-            imagesavealpha($destinationImage, true);
-            $transparent = imagecolorallocatealpha($destinationImage, 255, 255, 255, 127);
-            imagefilledrectangle($destinationImage, 0, 0, $width, $height, $transparent);
-        }
-
-        // Salin dan resize gambar
-        imagecopyresampled(
-            $destinationImage,
-            $sourceImage,
-            0,
-            0,
-            0,
-            0,
-            $width,
-            $height,
-            $originalWidth,
-            $originalHeight
-        );
-
-        // Simpan gambar yang sudah di-resize ke path yang sama
-        match ($imageType) {
-            IMAGETYPE_JPEG => imagejpeg($destinationImage, $fullPath),
-            IMAGETYPE_PNG => imagepng($destinationImage, $fullPath),
-            IMAGETYPE_GIF => imagegif($destinationImage, $fullPath),
-        };
-
-        // Bebaskan memori
-        imagedestroy($sourceImage);
-        imagedestroy($destinationImage);
-    }
-
-
-    /**
      * Delete the user's account.
      */
     public function destroy(Request $request): RedirectResponse
     {
-        $request->validateWithBag('userDeletion', [
+        $request->validate([
             'password' => ['required', 'current_password'],
         ]);
 
