@@ -77,23 +77,27 @@
                             {{-- Info Penulis & Tanggal --}}
                             <div class="mt-5 pt-4 border-t border-gray-800 flex items-center gap-3">
                                 @if ($article->author)
-                                    <img class="w-10 h-10 rounded-full object-cover"
-                                        src="{{ $article->author->avatar_url }}"
-                                        alt="Avatar {{ $article->author->name }}">
-                                    <div>
-                                        <p class="text-sm font-semibold text-white">{{ $article->author->name }}</p>
-                                        <p class="text-xs text-gray-500">{{ $article->created_at->diffForHumans() }}
-                                        </p>
-                                    </div>
+                                    <a href="{{ route('users.show', $article->author->slug) }}" class="flex items-center gap-3 group">
+                                        <img class="w-10 h-10 rounded-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                            src="{{ $article->author->avatar_url }}"
+                                            alt="Avatar {{ $article->author->name }}">
+                                        <div>
+                                            <p class="text-sm font-semibold text-white group-hover:text-primary transition-colors duration-300">{{ $article->author->name }}</p>
+                                            <p class="text-xs text-gray-500">{{ $article->created_at->diffForHumans() }}
+                                            </p>
+                                        </div>
+                                    </a>
                                 @else
                                     {{-- Fallback for deleted or non-existent author --}}
-                                    <img class="w-10 h-10 rounded-full object-cover"
-                                        src="{{ \Laravolt\Avatar\Facade::create('Guest')->toBase64() }}"
-                                        alt="Guest Avatar">
-                                    <div>
-                                        <p class="text-sm font-semibold text-white">Pengguna Tidak Ditemukan</p>
-                                        <p class="text-xs text-gray-500">{{ $article->created_at->diffForHumans() }}
-                                        </p>
+                                    <div class="flex items-center gap-3">
+                                        <img class="w-10 h-10 rounded-full object-cover"
+                                            src="{{ \Laravolt\Avatar\Facade::create('Guest')->toBase64() }}"
+                                            alt="Guest Avatar">
+                                        <div>
+                                            <p class="text-sm font-semibold text-white">Pengguna Tidak Ditemukan</p>
+                                            <p class="text-xs text-gray-500">{{ $article->created_at->diffForHumans() }}
+                                            </p>
+                                        </div>
                                     </div>
                                 @endif
                             </div>

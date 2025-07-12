@@ -23,7 +23,7 @@
                             <div>
                                 <a href="{{ route('threads.show', $thread) }}" class="text-lg font-semibold text-white hover:text-primary transition">{{ $thread->title }}</a>
                                 <p class="text-sm text-gray-400 mt-1">
-                                    Oleh <a href="#" class="text-primary hover:underline">{{ $thread->author->name }}</a>, {{ $thread->created_at->diffForHumans() }}
+                                    Oleh <a href="{{ route('users.show', $thread->author->slug) }}" class="text-primary hover:underline">{{ $thread->author->name }}</a>, {{ $thread->created_at->diffForHumans() }}
                                 </p>
                             </div>
                             <div class="text-right">

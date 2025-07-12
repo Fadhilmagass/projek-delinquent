@@ -6,7 +6,13 @@
     <div class="flex-1">
         <div class="bg-gray-700/50 p-4 rounded-lg rounded-tl-none">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between text-white text-sm">
-                <strong class="font-semibold">{{ $comment->author?->name ?? 'Pengguna Telah Dihapus' }}</strong>
+                @if ($comment->author)
+                    <a href="{{ route('users.show', $comment->author->slug) }}" class="font-semibold hover:underline">
+                        {{ $comment->author->name }}
+                    </a>
+                @else
+                    <strong class="font-semibold">Pengguna Telah Dihapus</strong>
+                @endif
                 <span class="text-xs text-gray-400 mt-1 sm:mt-0">{{ $comment->created_at->diffForHumans() }}</span>
             </div>
 

@@ -25,23 +25,27 @@
                 {{-- Info Penulis --}}
                 <div class="flex items-center gap-4 mb-6 border-b border-gray-700 pb-6">
                     @if ($article->author)
-                        <img class="h-12 w-12 rounded-full object-cover shadow-md"
-                            src="{{ $article->author->avatar_url }}" alt="{{ $article->author->name }}"
-                            loading="lazy">
-                        <div>
-                            <p class="text-md font-semibold text-white">{{ $article->author->name }}</p>
-                            <p class="text-sm text-gray-400">Diposting pada {{ $article->created_at->format('d M Y') }}
-                            </p>
-                        </div>
+                        <a href="{{ route('users.show', $article->author->slug) }}" class="flex items-center gap-4 group">
+                            <img class="h-12 w-12 rounded-full object-cover shadow-md transition-transform duration-300 group-hover:scale-110"
+                                src="{{ $article->author->avatar_url }}" alt="{{ $article->author->name }}"
+                                loading="lazy">
+                            <div>
+                                <p class="text-md font-semibold text-white group-hover:text-primary transition-colors duration-300">{{ $article->author->name }}</p>
+                                <p class="text-sm text-gray-400">Diposting pada {{ $article->created_at->format('d M Y') }}
+                                </p>
+                            </div>
+                        </a>
                     @else
                         {{-- Fallback for deleted or non-existent author --}}
-                        <img class="h-12 w-12 rounded-full object-cover shadow-md"
-                            src="{{ \Laravolt\Avatar\Facade::create('Guest')->toBase64() }}" alt="Guest Avatar"
-                            loading="lazy">
-                        <div>
-                            <p class="text-md font-semibold text-white">Pengguna Tidak Ditemukan</p>
-                            <p class="text-sm text-gray-400">Diposting pada {{ $article->created_at->format('d M Y') }}
-                            </p>
+                        <div class="flex items-center gap-4">
+                            <img class="h-12 w-12 rounded-full object-cover shadow-md"
+                                src="{{ \Laravolt\Avatar\Facade::create('Guest')->toBase64() }}" alt="Guest Avatar"
+                                loading="lazy">
+                            <div>
+                                <p class="text-md font-semibold text-white">Pengguna Tidak Ditemukan</p>
+                                <p class="text-sm text-gray-400">Diposting pada {{ $article->created_at->format('d M Y') }}
+                                </p>
+                            </div>
                         </div>
                     @endif
                 </div>

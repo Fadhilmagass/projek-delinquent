@@ -19,12 +19,14 @@
                         {{-- Judul dan Info Author --}}
                         <h1 class="text-3xl font-bold text-white">{{ $thread->title }}</h1>
                         <div class="flex items-center gap-4 mt-2">
-                            <img class="h-8 w-8 rounded-full" src="{{ $thread->author->avatar_url }}" alt="">
-                            <div>
-                                <p class="font-semibold text-white text-sm">{{ $thread->author->name }}</p>
-                                <p class="text-xs text-gray-400">Diposting {{ $thread->created_at->diffForHumans() }}
-                                </p>
-                            </div>
+                            <a href="{{ route('users.show', $thread->author->slug) }}" class="flex items-center gap-4 group">
+                                <img class="h-8 w-8 rounded-full transition-transform duration-300 group-hover:scale-110" src="{{ $thread->author->avatar_url }}" alt="{{ $thread->author->name }}">
+                                <div>
+                                    <p class="font-semibold text-white text-sm group-hover:text-primary transition-colors duration-300">{{ $thread->author->name }}</p>
+                                    <p class="text-xs text-gray-400">Diposting {{ $thread->created_at->diffForHumans() }}
+                                    </p>
+                                </div>
+                            </a>
                         </div>
 
                         @can('update', $thread)

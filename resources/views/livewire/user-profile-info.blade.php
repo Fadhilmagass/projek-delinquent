@@ -23,9 +23,8 @@
         </div>
 
         <div class="mt-4">
-            @livewire('follow-button', ['user' => $user, 'isFollowedByAuthUser' => (\Illuminate\Support\Facades\Auth::check() && $user->isFollowing(\Illuminate\Support\Facades\Auth::user()))])
+            @livewire('follow-button', ['user' => $user, 'isFollowedByAuthUser' => \Illuminate\Support\Facades\Auth::check() && $user->isFollowing(\Illuminate\Support\Facades\Auth::user())])
         </div>
 
     </div>
 </div>
-
