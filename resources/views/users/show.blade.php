@@ -17,8 +17,7 @@
                 <div class="mt-10 pt-8 border-t border-gray-700">
                     <h4 class="text-xl font-bold mb-4">Threads oleh {{ $user->name }}</h4>
                     @forelse ($threads as $thread)
-                        <div
-                            class="bg-gray-900 border border-gray-700 rounded-xl p-5 mb-4 hover:bg-gray-800 transition">
+                        <div class="bg-gray-900 border border-gray-700 rounded-xl p-5 mb-4 hover:bg-gray-800 transition">
                             <h5 class="text-lg font-semibold">
                                 <a href="{{ route('threads.show', $thread->slug) }}"
                                     class="hover:text-primary transition">
@@ -29,14 +28,17 @@
                                 {{ $thread->created_at->translatedFormat('d M Y H:i') }}
                             </p>
                             <p class="mt-2 text-gray-300 line-clamp-3">
-                                {{ Str::limit($thread->body, 200) }}
+                                {{ \Illuminate\Support\Str::limit($thread->body, 200) }}
                             </p>
                         </div>
                     @empty
-                        <p class="text-gray-500 py-4 px-5 bg-gray-900 border border-gray-700 rounded-xl">Pengguna ini belum membuat thread.</p>
+                        <p class="text-gray-500 py-4 px-5 bg-gray-900 border border-gray-700 rounded-xl">Pengguna ini
+                            belum membuat thread.</p>
                     @endforelse
                     <div class="mt-4">
-                        {{ $threads->links() }}
+                        @if ($threads->hasPages())
+                            {{ $threads->links()->withQueryString()->onEachSide(1)->fragment('threads') }}
+                        @endif
                     </div>
                 </div>
 
@@ -56,14 +58,17 @@
                                 {{ $article->created_at->translatedFormat('d M Y H:i') }}
                             </p>
                             <p class="mt-2 text-gray-300 line-clamp-3">
-                                {{ Str::limit($article->body, 200) }}
+                                {{ \Illuminate\Support\Str::limit($article->body, 200) }}
                             </p>
                         </div>
                     @empty
-                        <p class="text-gray-500 py-4 px-5 bg-gray-900 border border-gray-700 rounded-xl">Pengguna ini belum membuat artikel.</p>
+                        <p class="text-gray-500 py-4 px-5 bg-gray-900 border border-gray-700 rounded-xl">Pengguna ini
+                            belum membuat artikel.</p>
                     @endforelse
                     <div class="mt-4">
-                        {{ $articles->links() }}
+                        @if ($articles->hasPages())
+                            {{ $articles->links()->withQueryString()->onEachSide(1)->fragment('articles') }}
+                        @endif
                     </div>
                 </div>
 

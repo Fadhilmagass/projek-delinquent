@@ -96,7 +96,7 @@ class User extends Authenticatable
         return $this->hasMany(Article::class);
     }
 
-    public function getAvatarUrl()
+    public function getAvatarUrlAttribute()
     {
         if ($this->avatar_path && Storage::disk('public')->exists($this->avatar_path)) {
             return Storage::url($this->avatar_path);

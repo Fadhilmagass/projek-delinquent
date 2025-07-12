@@ -14,74 +14,70 @@
             document.querySelectorAll('.activity-item').forEach(el => observer.observe(el))
         }
     }" x-init="observe()">
-        <div class="max-w-5xl mx-auto sm:px-4 lg:px-6">
-            {{-- Kartu Profil Utama --}}
-            <div class="bg-gray-800/50 border border-gray-700/40 rounded-xl shadow-lg shadow-black/10 overflow-hidden">
-                <div class="p-5 sm:p-8 flex flex-col md:flex-row gap-6 md:gap-10 items-center md:items-start">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            {{-- Kartu Profil --}}
+            <div class="bg-gray-800/60 border border-gray-700 rounded-2xl shadow-lg">
+                <div class="p-6 sm:p-8 flex flex-col md:flex-row gap-6 md:gap-10 items-center md:items-start">
                     {{-- Avatar --}}
                     <div class="relative group">
-                        <img class="w-28 h-28 md:w-36 md:h-36 rounded-full object-cover border-4 border-gray-600 shadow-md group-hover:scale-105 transition duration-300"
-                            src="{{ auth()->user()->getAvatarUrl() }}" alt="{{ auth()->user()->name }}">
+                        <img class="w-28 h-28 md:w-36 md:h-36 rounded-full object-cover border-4 border-gray-600 shadow-md transition-transform group-hover:scale-105 duration-300"
+                            src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}">
                         <span
                             class="absolute bottom-2 right-2 bg-green-500 border-2 border-gray-900 h-4 w-4 rounded-full"></span>
                     </div>
 
-                    {{-- Info Pengguna --}}
+                    {{-- Informasi Pengguna --}}
                     <div class="flex-grow text-center md:text-left">
                         <h1 class="text-2xl sm:text-3xl font-bold text-white">{{ auth()->user()->name }}</h1>
-
                         @if (auth()->user()->lokasi)
-                            <div class="flex items-center justify-center md:justify-start text-sm text-gray-400 mt-1">
-                                <x-icons.location class="mr-1.5 h-4 w-4" />
+                            <div
+                                class="mt-1 text-sm text-gray-400 flex justify-center md:justify-start items-center gap-1">
+                                <x-icons.location class="w-4 h-4" />
                                 {{ auth()->user()->lokasi }}
                             </div>
                         @endif
 
+                        {{-- Statistik --}}
                         <div class="flex flex-wrap justify-center md:justify-start gap-4 mt-4">
-                            <div class="bg-gray-700/40 px-4 py-2 rounded text-center">
-                                <p class="text-xl font-bold text-primary">{{ auth()->user()->threads_count }}</p>
-                                <p class="text-xs text-gray-400 uppercase">Threads</p>
-                            </div>
-                            <div class="bg-gray-700/40 px-4 py-2 rounded text-center">
-                                <p class="text-xl font-bold text-primary">{{ auth()->user()->comments_count }}</p>
-                                <p class="text-xs text-gray-400 uppercase">Komentar</p>
-                            </div>
-                            <div class="bg-gray-700/40 px-4 py-2 rounded text-center">
-                                <p class="text-xl font-bold text-primary">{{ auth()->user()->followers_count }}</p>
-                                <p class="text-xs text-gray-400 uppercase">Pengikut</p>
-                            </div>
-                            <div class="bg-gray-700/40 px-4 py-2 rounded text-center">
-                                <p class="text-xl font-bold text-primary">{{ auth()->user()->following_count }}</p>
-                                <p class="text-xs text-gray-400 uppercase">Mengikuti</p>
-                            </div>
-                            <div class="bg-gray-700/40 px-4 py-2 rounded text-center">
-                                <p class="text-xl font-bold text-primary">
-                                    {{ auth()->user()->created_at->diffForHumans(null, true) }}</p>
-                                <p class="text-xs text-gray-400 uppercase">Bergabung</p>
-                            </div>
+                            @foreach ([['label' => 'Threads', 'value' => auth()->user()->threads_count, 'route' => null], ['label' => 'Komentar', 'value' => auth()->user()->comments_count, 'route' => null], ['label' => 'Pengikut', 'value' => auth()->user()->followers_count, 'route' => 'users.followers'], ['label' => 'Mengikuti', 'value' => auth()->user()->following_count, 'route' => 'users.following'], ['label' => 'Bergabung', 'value' => auth()->user()->created_at->diffForHumans(null, true), 'route' => null]] as $stat)
+                                @if ($stat['route'])
+                                    <a href="{{ route($stat['route'], auth()->user()->slug) }}"
+                                        class="bg-gray-700/40 px-4 py-2 rounded text-center hover:bg-gray-600 transition w-[110px]">
+                                        <p class="text-xl font-bold text-primary">{{ $stat['value'] }}</p>
+                                        <p class="text-xs text-gray-400 uppercase">{{ $stat['label'] }}</p>
+                                    </a>
+                                @else
+                                    <div
+                                        class="bg-gray-700/40 px-4 py-2 rounded text-center hover:bg-gray-600 transition w-[110px]">
+                                        <p class="text-xl font-bold text-primary">{{ $stat['value'] }}</p>
+                                        <p class="text-xs text-gray-400 uppercase">{{ $stat['label'] }}</p>
+                                    </div>
+                                @endif
+                            @endforeach
                         </div>
                     </div>
 
                     {{-- Tombol Edit --}}
-                    <div class="md:mt-0">
+                    <div class="w-full md:w-auto text-center md:text-right">
                         <a href="{{ route('profile.edit') }}"
-                            class="inline-block bg-primary hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition-all duration-300">
+                            class="bg-primary hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md transition duration-300">
                             Edit Profil
                         </a>
                     </div>
                 </div>
 
-                {{-- Navigasi Tab --}}
-                <div class="border-t border-gray-700/50 px-4">
-                    <nav class="flex space-x-6 pt-3 text-sm font-medium" aria-label="Tabs">
+                {{-- Tab Navigasi --}}
+                <div class="border-t border-gray-700 px-6">
+                    <nav class="flex space-x-6 pt-4 text-sm font-medium justify-center md:justify-start">
                         <button @click="activeTab = 'profile'"
-                            :class="{ 'border-primary text-primary': activeTab === 'profile', 'text-gray-400 hover:text-white': activeTab !== 'profile' }"
-                            class="pb-2 border-b-2 transition-all">
+                            :class="activeTab === 'profile' ? 'border-primary text-primary' : 'text-gray-400 hover:text-white'"
+                            class="pb-2 border-b-2 transition">
                             Profil
                         </button>
                         <button @click="activeTab = 'activity'"
-                            :class="{ 'border-primary text-primary': activeTab === 'activity', 'text-gray-400 hover:text-white': activeTab !== 'activity' }"
-                            class="pb-2 border-b-2 transition-all">
+                            :class="activeTab === 'activity' ? 'border-primary text-primary' : 'text-gray-400 hover:text-white'"
+                            class="pb-2 border-b-2 transition">
                             Aktivitas Terbaru
                         </button>
                     </nav>
@@ -90,6 +86,7 @@
 
             {{-- Konten Tab --}}
             <div class="mt-6">
+
                 {{-- Tab Profil --}}
                 <div x-show="activeTab === 'profile'" x-transition>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -98,7 +95,7 @@
                             <h2 class="text-lg font-semibold text-white border-b border-primary/40 pb-2 mb-3">Tentang
                                 Saya</h2>
                             @if (auth()->user()->bio)
-                                <p class="text-gray-300 leading-relaxed whitespace-pre-wrap">{{ auth()->user()->bio }}
+                                <p class="text-gray-300 whitespace-pre-line leading-relaxed">{{ auth()->user()->bio }}
                                 </p>
                             @else
                                 <p class="text-gray-500 italic">Anda belum menambahkan bio.</p>
@@ -112,7 +109,7 @@
                             <div class="flex flex-wrap gap-3">
                                 @forelse(auth()->user()->genres as $genre)
                                     <span
-                                        class="bg-secondary text-sm text-white font-medium px-4 py-1.5 rounded-full hover:bg-primary transition-all duration-200">
+                                        class="bg-secondary text-sm text-white font-medium px-4 py-1.5 rounded-full hover:bg-primary transition-all">
                                         {{ $genre->name }}
                                     </span>
                                 @empty

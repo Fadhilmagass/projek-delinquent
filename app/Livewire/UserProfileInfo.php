@@ -8,8 +8,9 @@ use Livewire\Component;
 class UserProfileInfo extends Component
 {
     public User $user;
-
-    protected $listeners = ['userFollowStatusUpdated' => 'refreshUser'];
+    protected $listeners = [
+        'userFollowStatusUpdated' => 'refreshUser',
+    ];
 
     public function mount(User $user)
     {

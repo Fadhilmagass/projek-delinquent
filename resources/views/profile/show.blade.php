@@ -7,7 +7,7 @@
                 {{-- Header Profil --}}
                 <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-6 space-y-4 sm:space-y-0">
                     <img class="h-24 w-24 rounded-full object-cover ring-2 ring-primary shadow-md transition hover:scale-105"
-                        src="{{ $user->getAvatarUrl() }}" alt="{{ $user->name }}">
+                        src="{{ $user->avatar_url }}" alt="{{ $user->name }}">
 
                     <div class="text-center sm:text-left">
                         <h1 class="text-3xl sm:text-4xl font-extrabold text-white">{{ $user->name }}</h1>

@@ -13,13 +13,19 @@
         <div class="flex items-center space-x-4 mt-3 text-sm text-gray-400">
             <span>Bergabung sejak {{ $user->created_at->translatedFormat('d M Y') }}</span>
             <span>&bull;</span>
-            <span>{{ $user->followers->count() }} Pengikut</span>
+            <a href="{{ route('users.followers', $user->slug) }}" class="hover:text-white transition cursor-pointer">
+                {{ $user->followers->count() }} Pengikut
+            </a>
             <span>&bull;</span>
-            <span>Mengikuti {{ $user->following->count() }}</span>
+            <a href="{{ route('users.following', $user->slug) }}" class="hover:text-white transition cursor-pointer">
+                Mengikuti {{ $user->following->count() }}
+            </a>
         </div>
 
         <div class="mt-4">
-            @livewire('follow-button', ['user' => $user])
+            @livewire('follow-button', ['user' => $user, 'isFollowedByAuthUser' => (\Illuminate\Support\Facades\Auth::check() && $user->isFollowing(\Illuminate\Support\Facades\Auth::user()))])
         </div>
+
     </div>
 </div>
+

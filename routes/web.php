@@ -51,4 +51,8 @@ Route::get('/threads/{thread:slug}', [ThreadController::class, 'show'])->name('t
 // Public User Profile Route
 Route::get('/users/{user:slug}', [ProfileController::class, 'show'])->name('users.show');
 
+// User Follows/Following Routes
+Route::get('/users/{user:slug}/followers', [ProfileController::class, 'followers'])->name('users.followers');
+Route::get('/users/{user:slug}/following', [ProfileController::class, 'following'])->name('users.following');
+
 require __DIR__ . '/auth.php';

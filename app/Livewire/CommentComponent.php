@@ -32,6 +32,7 @@ class CommentComponent extends Component
     public function startReplying()
     {
         $this->isReplying = true;
+        $this->replyBody = '@' . ($this->comment->author->slug ?? 'pengguna-dihapus') . ' ';
     }
 
     public function cancelReplying()

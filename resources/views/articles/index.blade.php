@@ -78,7 +78,7 @@
                             <div class="mt-5 pt-4 border-t border-gray-800 flex items-center gap-3">
                                 @if ($article->author)
                                     <img class="w-10 h-10 rounded-full object-cover"
-                                        src="{{ $article->author->getAvatarUrl() }}"
+                                        src="{{ $article->author->avatar_url }}"
                                         alt="Avatar {{ $article->author->name }}">
                                     <div>
                                         <p class="text-sm font-semibold text-white">{{ $article->author->name }}</p>

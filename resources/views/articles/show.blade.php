@@ -26,7 +26,7 @@
                 <div class="flex items-center gap-4 mb-6 border-b border-gray-700 pb-6">
                     @if ($article->author)
                         <img class="h-12 w-12 rounded-full object-cover shadow-md"
-                            src="{{ $article->author->getAvatarUrl() }}" alt="{{ $article->author->name }}"
+                            src="{{ $article->author->avatar_url }}" alt="{{ $article->author->name }}"
                             loading="lazy">
                         <div>
                             <p class="text-md font-semibold text-white">{{ $article->author->name }}</p>

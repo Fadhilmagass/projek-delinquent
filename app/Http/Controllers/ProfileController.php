@@ -89,4 +89,22 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    /**
+     * Display the specified user's followers.
+     */
+    public function followers(User $user): View
+    {
+        $followers = $user->followers()->paginate(20);
+        return view('users.followers', compact('user', 'followers'));
+    }
+
+    /**
+     * Display the specified user's following.
+     */
+    public function following(User $user): View
+    {
+        $following = $user->following()->paginate(20);
+        return view('users.following', compact('user', 'following'));
+    }
 }

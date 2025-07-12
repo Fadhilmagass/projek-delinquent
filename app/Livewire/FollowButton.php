@@ -10,11 +10,13 @@ class FollowButton extends Component
 {
     public User $user;
     public bool $isFollowing;
+    public bool $isFollowedByAuthUser;
 
-    public function mount(User $user)
+    public function mount(User $user, bool $isFollowedByAuthUser)
     {
         $this->user = $user;
         $this->isFollowing = Auth::user() ? Auth::user()->isFollowing($user) : false;
+        $this->isFollowedByAuthUser = $isFollowedByAuthUser;
     }
 
     public function toggleFollow()

@@ -22,7 +22,7 @@
         <div>
             <x-input-label for="avatar" :value="__('Avatar')" />
             <div class="mt-2 flex items-center gap-x-3">
-                <img class="h-24 w-24 rounded-full object-cover" src="{{ $user->getAvatarUrl() }}" alt="Current avatar">
+                <img class="h-24 w-24 rounded-full object-cover" src="{{ $user->avatar_url }}" alt="Current avatar">
                 <input id="avatar" name="avatar" type="file"
                     class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20" />
             </div>

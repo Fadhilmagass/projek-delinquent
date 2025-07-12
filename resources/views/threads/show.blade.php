@@ -19,7 +19,7 @@
                         {{-- Judul dan Info Author --}}
                         <h1 class="text-3xl font-bold text-white">{{ $thread->title }}</h1>
                         <div class="flex items-center gap-4 mt-2">
-                            <img class="h-8 w-8 rounded-full" src="{{ $thread->author->getAvatarUrl() }}" alt="">
+                            <img class="h-8 w-8 rounded-full" src="{{ $thread->author->avatar_url }}" alt="">
                             <div>
                                 <p class="font-semibold text-white text-sm">{{ $thread->author->name }}</p>
                                 <p class="text-xs text-gray-400">Diposting {{ $thread->created_at->diffForHumans() }}

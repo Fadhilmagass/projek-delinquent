@@ -56,4 +56,14 @@ class Article extends Model
             ? Storage::url($this->image)
             : null;
     }
+
+    /**
+     * Get the route key for the model.
+     *
+     * @return string
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }
