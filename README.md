@@ -104,7 +104,7 @@ Ikuti langkah-langkah ini untuk menjalankan proyek di mesin lokal Anda.
 9.  **Kompilasi aset:**
 
     ```bash
-    npm run build && npm run dev
+    npm run dev
     ```
 
     Untuk lingkungan produksi, gunakan `npm run build`.
